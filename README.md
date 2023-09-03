@@ -18,7 +18,7 @@ The Phil solving engine (in progress) uses the [Glucose](http://www.labri.fr/per
 
 To use Phil:
 
-1. Go to [keiranking.com/phil](http://www.keiranking.com/phil).
+1. Go to [https://fourtf.github.io/Phil/](https://fourtf.github.io/Phil/) or the original creator's page [keiranking.com/phil](http://www.keiranking.com/phil).
 
 To run your own copy of Phil:
 
