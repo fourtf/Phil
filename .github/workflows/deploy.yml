@@ -1,0 +1,49 @@
+name: Deploy on GH Pages
+
+on:
+  push:
+    branches: [master]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # SETUP
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+
+      # BUILD
+      - name: Build solver
+        run: |
+          docker run --rm -v $(pwd):/src -u $(id -u):$(id -g) emscripten/emsdk sh -c "cd /src/third_party/glucose-3.0/simp && make xwsolve.js"
+
+      - name: Copy output
+        run: |
+          mkdir -p out
+          mkdir -p out/third_party/glucose-3.0/simp
+          cp third_party/glucose-3.0/simp/xwsolve.js out/third_party/glucose-3.0/simp/
+          cp third_party/glucose-3.0/simp/xwsolve.wasm out/third_party/glucose-3.0/simp/
+          cp *.html out/
+          cp *.js out/
+          cp *.css out/
+          cp *.txt out/
+          mkdir -p out/images
+          cp images/*.png out/images/
+
+      # UPLOAD
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: './out'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
+          
